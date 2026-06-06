@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>How Image Steganography Works: A Deep Dive into Pixel Hiding</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <style>
         body {
-            background-color: #f0f2f5; /* Light subtle background */
+            background-color: #f0f2f5;
+            /* Light subtle background */
         }
+
         .explanation-section {
             background-color: #ffffff;
             padding: 30px;
@@ -18,25 +22,33 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             margin-bottom: 40px;
         }
+
         .explanation-section h2 {
-            color: #0056b3; /* Darker blue for section titles */
+            color: #0056b3;
+            /* Darker blue for section titles */
             margin-bottom: 25px;
             font-weight: bold;
         }
+
         .explanation-section p {
             line-height: 1.8;
             text-align: justify;
         }
+
         .step-indicator {
             font-size: 2.5rem;
-            color: #28a745; /* Green for step numbers */
+            color: #28a745;
+            /* Green for step numbers */
             font-weight: bold;
             line-height: 1;
         }
+
         .highlight-text {
-            color: #dc3545; /* Red for emphasis */
+            color: #dc3545;
+            /* Red for emphasis */
             font-weight: bold;
         }
+
         .img-label {
             font-style: italic;
             color: #6c757d;
@@ -47,113 +59,153 @@
         }
     </style>
 </head>
+
 <body>
 
-<div class="container my-5">
-    <div class="row justify-content-center">
+    <div class="container my-5">
+        <div class="row justify-content-center">
 
-        <div class="col-lg-10">
-            
-            <div class="row mb-3">
-                <div class="col-12 text-start">
-                    <a href="home2.html" class="btn btn-outline-secondary btn-sm">← Back to Home</a>
+            <div class="col-lg-10">
+
+                <div class="row mb-3">
+                    <div class="col-12 text-start">
+                        <a href="index.html" class="btn btn-outline-secondary btn-sm">← Back to Home</a>
+                    </div>
                 </div>
+                <header class="mb-5 text-center">
+                    <p class="text-uppercase text-info fw-bold mb-1">Fundamentals Explained</p>
+                    <h1 class="display-4 fw-bold text-dark">How Image Steganography Works: Hiding Data within Pixels
+                    </h1>
+                    <p class="lead text-muted">Unveiling the ingenious methods behind concealing secret messages within
+                        ordinary images.</p>
+                    <div class="text-muted small">Authored by Tech Insights | November 5, 2025</div>
+                    <hr>
+                </header>
+
+                <article class="blog-content">
+
+                    <p class="fs-5">
+                        Steganography isn't magic; it's a clever application of digital properties. At its core, image
+                        steganography leverages the vast amount of **redundant data** within image files to embed secret
+                        information without causing a perceptible change to the image itself. Let's break down the most
+                        common techniques.
+                    </p>
+
+                    <div class="explanation-section mt-5">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="step-indicator me-3">1</span>
+                            <h2>The Basics: Pixels and Bits</h2>
+                        </div>
+                        <p>
+                            Every digital image is composed of tiny squares called **pixels**. Each pixel, in turn, is
+                            made up of color information, typically represented by **Red, Green, and Blue (RGB)**
+                            values. In an 8-bit per channel image, each color (R, G, or B) can have 256 different
+                            intensity levels (0-255). This means each color component uses 8 bits of data.
+                        </p>
+                        <p>
+                            For example, pure red might be `(255, 0, 0)`, which in binary for an 8-bit channel is
+                            `(11111111, 00000000, 00000000)`.
+                        </p>
+                        <img src="placeholder-pixel-bits.png" class="img-fluid rounded shadow-sm my-3"
+                            alt="Diagram showing RGB pixel components and their binary representation">
+                        <p class="img-label">Each color channel (Red, Green, Blue) typically uses 8 bits.</p>
+                    </div>
+
+                    <div class="explanation-section">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="step-indicator me-3">2</span>
+                            <h2>Least Significant Bit (LSB) Steganography</h2>
+                        </div>
+                        <p>
+                            The most straightforward and widely explained method is **Least Significant Bit (LSB)
+                            steganography**. It works on the principle that changing the <span
+                                class="highlight-text">least significant bit</span> of a pixel's color value will result
+                            in a color change too subtle for the human eye to detect.
+                        </p>
+                        <p>
+                            Consider a single 8-bit color value, say `10110010`. The rightmost bit (`0`) is the LSB. If
+                            we change it to `10110011`, the decimal value only changes from `178` to `179`. This minute
+                            difference is visually imperceptible.
+                        </p>
+                        <img src="placeholder-lsb-process.png" class="img-fluid rounded shadow-sm my-3"
+                            alt="Diagram illustrating LSB data embedding process">
+                        <p class="img-label">A secret message bit replaces the LSB of a color channel.</p>
+                        <p>
+                            By replacing the LSB of multiple color channels across many pixels with the binary bits of a
+                            secret message, a significant amount of data can be hidden. For example, in a 24-bit image
+                            (8 bits per R, G, B channel), three bits of a secret message can be hidden per pixel.
+                        </p>
+                    </div>
+
+                    <div class="explanation-section">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="step-indicator me-3">3</span>
+                            <h2>The Hiding Process in Detail</h2>
+                        </div>
+                        <ol>
+                            <li>**Convert Message:** The secret message (text, another image, etc.) is converted into a
+                                binary stream.</li>
+                            <li>**Select Cover Image:** A suitable cover image is chosen. Lossless formats like <span
+                                    class="highlight-text">PNG</span> are preferred as JPEG compression can destroy
+                                hidden data.</li>
+                            <li>**Embed Data:** An algorithm iterates through the pixels of the cover image. For each
+                                pixel's R, G, and B color channels, it replaces the current LSB with a bit from the
+                                secret message's binary stream.</li>
+                            <li>**Create Stego-Image:** The modified pixels form a new image, the "stego-image," which
+                                looks identical to the original but now secretly contains the hidden data.</li>
+                        </ol>
+                        <img src="placeholder-stego-flow.png" class="img-fluid rounded shadow-sm my-3"
+                            alt="Flowchart of steganography hiding process">
+                        <p class="img-label">The complete flow from secret message to stego-image.</p>
+                    </div>
+
+                    <div class="explanation-section">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="step-indicator me-3">4</span>
+                            <h2>Extraction: Retrieving the Secret</h2>
+                        </div>
+                        <p>
+                            To retrieve the hidden message, the recipient needs the stego-image and the steganography
+                            key (if one was used to determine which pixels/bits were modified).
+                        </p>
+                        <ol>
+                            <li>**Read Stego-Image:** The extraction tool reads the pixel data from the stego-image.
+                            </li>
+                            <li>**Extract LSBs:** Using the same algorithm and key, it extracts the LSBs from the
+                                designated color channels of the relevant pixels.</li>
+                            <li>**Reconstruct Message:** These extracted bits are concatenated to form a binary stream,
+                                which is then converted back into the original secret message format (text, image,
+                                etc.).</li>
+                        </ol>
+                    </div>
+
+                    <p class="mt-5 fs-5 text-center">
+                        While LSB is conceptually simple, modern steganography employs more sophisticated algorithms,
+                        often combining steganography with encryption for enhanced security, making detection incredibly
+                        challenging.
+                    </p>
+
+                </article>
+
+                <div class="text-center my-5 p-5 bg-gradient rounded shadow-lg"
+                    style="background-image: linear-gradient(135deg, #007bff 0%, #00d4ff 100%); color: white;">
+                    <h4 class="mb-3">Unlock More Cybersecurity Secrets!</h4>
+                    <p>Subscribe to our blog for weekly insights into digital security and covert communication.</p>
+                    <a href="#" class="btn btn-light btn-lg text-primary fw-bold">Sign Up Today</a>
+                </div>
+
             </div>
-            <header class="mb-5 text-center">
-                <p class="text-uppercase text-info fw-bold mb-1">Fundamentals Explained</p>
-                <h1 class="display-4 fw-bold text-dark">How Image Steganography Works: Hiding Data within Pixels</h1>
-                <p class="lead text-muted">Unveiling the ingenious methods behind concealing secret messages within ordinary images.</p>
-                <div class="text-muted small">Authored by Tech Insights | November 5, 2025</div>
-                <hr>
-            </header>
-            
-            <article class="blog-content">
-                
-                <p class="fs-5">
-                    Steganography isn't magic; it's a clever application of digital properties. At its core, image steganography leverages the vast amount of **redundant data** within image files to embed secret information without causing a perceptible change to the image itself. Let's break down the most common techniques.
-                </p>
-
-                <div class="explanation-section mt-5">
-                    <div class="d-flex align-items-center mb-3">
-                        <span class="step-indicator me-3">1</span>
-                        <h2>The Basics: Pixels and Bits</h2>
-                    </div>
-                    <p>
-                        Every digital image is composed of tiny squares called **pixels**. Each pixel, in turn, is made up of color information, typically represented by **Red, Green, and Blue (RGB)** values. In an 8-bit per channel image, each color (R, G, or B) can have 256 different intensity levels (0-255). This means each color component uses 8 bits of data.
-                    </p>
-                    <p>
-                        For example, pure red might be `(255, 0, 0)`, which in binary for an 8-bit channel is `(11111111, 00000000, 00000000)`.
-                    </p>
-                    <img src="placeholder-pixel-bits.png" class="img-fluid rounded shadow-sm my-3" alt="Diagram showing RGB pixel components and their binary representation">
-                    <p class="img-label">Each color channel (Red, Green, Blue) typically uses 8 bits.</p>
-                </div>
-
-                <div class="explanation-section">
-                    <div class="d-flex align-items-center mb-3">
-                        <span class="step-indicator me-3">2</span>
-                        <h2>Least Significant Bit (LSB) Steganography</h2>
-                    </div>
-                    <p>
-                        The most straightforward and widely explained method is **Least Significant Bit (LSB) steganography**. It works on the principle that changing the <span class="highlight-text">least significant bit</span> of a pixel's color value will result in a color change too subtle for the human eye to detect.
-                    </p>
-                    <p>
-                        Consider a single 8-bit color value, say `10110010`. The rightmost bit (`0`) is the LSB. If we change it to `10110011`, the decimal value only changes from `178` to `179`. This minute difference is visually imperceptible.
-                    </p>
-                    <img src="placeholder-lsb-process.png" class="img-fluid rounded shadow-sm my-3" alt="Diagram illustrating LSB data embedding process">
-                    <p class="img-label">A secret message bit replaces the LSB of a color channel.</p>
-                    <p>
-                        By replacing the LSB of multiple color channels across many pixels with the binary bits of a secret message, a significant amount of data can be hidden. For example, in a 24-bit image (8 bits per R, G, B channel), three bits of a secret message can be hidden per pixel.
-                    </p>
-                </div>
-
-                <div class="explanation-section">
-                    <div class="d-flex align-items-center mb-3">
-                        <span class="step-indicator me-3">3</span>
-                        <h2>The Hiding Process in Detail</h2>
-                    </div>
-                    <ol>
-                        <li>**Convert Message:** The secret message (text, another image, etc.) is converted into a binary stream.</li>
-                        <li>**Select Cover Image:** A suitable cover image is chosen. Lossless formats like <span class="highlight-text">PNG</span> are preferred as JPEG compression can destroy hidden data.</li>
-                        <li>**Embed Data:** An algorithm iterates through the pixels of the cover image. For each pixel's R, G, and B color channels, it replaces the current LSB with a bit from the secret message's binary stream.</li>
-                        <li>**Create Stego-Image:** The modified pixels form a new image, the "stego-image," which looks identical to the original but now secretly contains the hidden data.</li>
-                    </ol>
-                    <img src="placeholder-stego-flow.png" class="img-fluid rounded shadow-sm my-3" alt="Flowchart of steganography hiding process">
-                    <p class="img-label">The complete flow from secret message to stego-image.</p>
-                </div>
-
-                <div class="explanation-section">
-                    <div class="d-flex align-items-center mb-3">
-                        <span class="step-indicator me-3">4</span>
-                        <h2>Extraction: Retrieving the Secret</h2>
-                    </div>
-                    <p>
-                        To retrieve the hidden message, the recipient needs the stego-image and the steganography key (if one was used to determine which pixels/bits were modified).
-                    </p>
-                    <ol>
-                        <li>**Read Stego-Image:** The extraction tool reads the pixel data from the stego-image.</li>
-                        <li>**Extract LSBs:** Using the same algorithm and key, it extracts the LSBs from the designated color channels of the relevant pixels.</li>
-                        <li>**Reconstruct Message:** These extracted bits are concatenated to form a binary stream, which is then converted back into the original secret message format (text, image, etc.).</li>
-                    </ol>
-                </div>
-
-                <p class="mt-5 fs-5 text-center">
-                    While LSB is conceptually simple, modern steganography employs more sophisticated algorithms, often combining steganography with encryption for enhanced security, making detection incredibly challenging.
-                </p>
-
-            </article>
-
-            <div class="text-center my-5 p-5 bg-gradient rounded shadow-lg" style="background-image: linear-gradient(135deg, #007bff 0%, #00d4ff 100%); color: white;">
-                <h4 class="mb-3">Unlock More Cybersecurity Secrets!</h4>
-                <p>Subscribe to our blog for weekly insights into digital security and covert communication.</p>
-                <a href="#" class="btn btn-light btn-lg text-primary fw-bold">Sign Up Today</a>
-            </div>
-
-        </div> </div> </div> <footer class="py-4 bg-dark mt-5">
-    <div class="container text-center">
-        <p class="m-0 text-white-50">Steganography Explained &copy; 2025 Your Security Blog</p>
+        </div>
     </div>
-</footer>
+    <footer class="py-4 bg-dark mt-5">
+        <div class="container text-center">
+            <p class="m-0 text-white-50">Steganography Explained &copy; 2025 Your Security Blog</p>
+        </div>
+    </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>

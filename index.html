@@ -1,22 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stego-Secure - Hide Data in Plain Sight</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    
+
     <style>
         /* CSS Reset and Variables */
         :root {
-            --color-bg-dark: #0A192F; /* Deep Navy Blue */
-            --color-card-dark: #112240; /* Slightly lighter navy for cards */
-            --color-primary: #64FFDA; /* Neon Green for accents/links */
-            --color-secondary: #7F5AF0; /* Vibrant Purple for main buttons/gradients */
-            --color-accent-blue: #4D4DFF; /* Blue used in gradients */
-            --color-text-light: #CCD6F6; /* Light gray for main text */
-            --color-text-dim: #8892B0; /* Dimmer gray for small text */
+            --color-bg-dark: #0A192F;
+            /* Deep Navy Blue */
+            --color-card-dark: #112240;
+            /* Slightly lighter navy for cards */
+            --color-primary: #64FFDA;
+            /* Neon Green for accents/links */
+            --color-secondary: #7F5AF0;
+            /* Vibrant Purple for main buttons/gradients */
+            --color-accent-blue: #4D4DFF;
+            /* Blue used in gradients */
+            --color-text-light: #CCD6F6;
+            /* Light gray for main text */
+            --color-text-dim: #8892B0;
+            /* Dimmer gray for small text */
             --font-main: 'Poppins', sans-serif;
             --header-height: 80px;
         }
@@ -33,7 +42,8 @@
             color: var(--color-text-light);
             line-height: 1.6;
             min-height: 100vh;
-            transition: background-color 0.3s, color 0.3s; /* Smooth transition for theme change */
+            transition: background-color 0.3s, color 0.3s;
+            /* Smooth transition for theme change */
         }
 
         a {
@@ -74,20 +84,20 @@
             font-weight: 700;
             color: var(--color-text-light);
         }
-        
+
         /* New Navigation Links Container */
         .main-nav {
             display: flex;
             gap: 20px;
             font-size: 0.95rem;
         }
-        
+
         .main-nav a {
             color: var(--color-text-dim);
             transition: color 0.3s;
             font-weight: 500;
         }
-        
+
         .main-nav a:hover,
         .main-nav a.active {
             color: var(--color-text-light);
@@ -147,7 +157,7 @@
             border-radius: 5px;
             background-color: #4d4dff1a;
         }
-        
+
         .hero-tag i {
             color: #4D4DFF;
             margin-right: 5px;
@@ -208,12 +218,12 @@
             color: var(--color-accent-blue);
             border-color: var(--color-accent-blue);
         }
-        
+
         .hero-graphic {
             flex: 1;
             max-width: 600px;
         }
-        
+
         .graphic-mockup {
             width: 100%;
             height: 300px;
@@ -224,7 +234,7 @@
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
-        
+
         .graphic-mockup::before {
             position: absolute;
             top: 0;
@@ -237,7 +247,7 @@
             font-size: 0.9rem;
             text-align: right;
         }
-        
+
         .graphic-mockup .screen-content {
             position: absolute;
             top: 50%;
@@ -257,13 +267,15 @@
             font-size: 0.85rem;
             color: var(--color-text-dim);
         }
+
         .hero-sub-links a {
             color: var(--color-primary);
             margin-right: 15px;
             transition: color 0.3s;
         }
+
         .hero-sub-links a:hover {
-             color: var(--color-accent-blue);
+            color: var(--color-accent-blue);
         }
 
         /* 3. Why Choose Stego-Secure Section */
@@ -347,19 +359,19 @@
 
         .article-header {
             height: 150px;
-            background-image: linear-gradient(135deg, #7F5AF0, #4D4DFF); 
+            background-image: linear-gradient(135deg, #7F5AF0, #4D4DFF);
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
             color: var(--color-text-light);
         }
-        
+
         .article-header i {
             font-size: 2.5rem;
             opacity: 0.2;
         }
-        
+
         .article-header .arrow-icon {
             position: absolute;
             top: 15px;
@@ -369,6 +381,7 @@
             opacity: 0.8;
             transition: opacity 0.3s;
         }
+
         .article-card:hover .arrow-icon {
             opacity: 1;
         }
@@ -376,7 +389,7 @@
         .article-content {
             padding: 20px;
         }
-        
+
         .article-meta {
             display: flex;
             justify-content: space-between;
@@ -386,7 +399,7 @@
             margin-bottom: 15px;
             font-weight: 500;
         }
-        
+
         .article-meta span {
             background-color: #1a345a;
             padding: 4px 10px;
@@ -406,7 +419,7 @@
             color: var(--color-text-dim);
             font-size: 0.9rem;
             margin-bottom: 15px;
-            min-height: 40px; 
+            min-height: 40px;
         }
 
         .read-more {
@@ -421,22 +434,22 @@
             color: #9275F3;
             text-decoration: underline;
         }
-        
+
         /* 5. Footer */
         footer {
-            background-color: #05101E; 
+            background-color: #05101E;
             padding: 30px 0;
             border-top: 1px solid #112240;
             color: var(--color-text-dim);
             font-size: 0.9rem;
             text-align: center;
         }
-        
+
         footer a {
             color: var(--color-text-dim);
             margin: 0 10px;
         }
-        
+
         footer a:hover {
             color: var(--color-accent-blue);
         }
@@ -445,8 +458,8 @@
 
         /* Style for the Sign Up button in the nav bar */
         .profile-nav .btn-small {
-            padding: 8px 15px; 
-            font-size: 0.9rem; 
+            padding: 8px 15px;
+            font-size: 0.9rem;
             margin-left: 10px;
         }
 
@@ -461,7 +474,8 @@
             padding: 5px;
             line-height: 1;
             margin-right: 5px;
-            order: -1; /* Place toggle first in flex container */
+            order: -1;
+            /* Place toggle first in flex container */
         }
 
         #theme-toggle:hover {
@@ -474,9 +488,11 @@
             --color-card-dark: #F0F4F8;
             --color-text-light: #1E293B;
             --color-text-dim: #64748B;
-            --color-primary: #1D4ED8; 
-            --color-accent-blue: #10B981; /* Adjust primary accent for light mode */
-            --color-secondary: #007bff; /* Adjust secondary accent for light mode */
+            --color-primary: #1D4ED8;
+            --color-accent-blue: #10B981;
+            /* Adjust primary accent for light mode */
+            --color-secondary: #007bff;
+            /* Adjust secondary accent for light mode */
         }
 
         body.light-mode header,
@@ -505,6 +521,7 @@
             border: 1px solid var(--color-accent-blue);
             background-color: #10b9811a;
         }
+
         body.light-mode .hero-tag i {
             color: var(--color-accent-blue);
         }
@@ -529,7 +546,7 @@
         }
 
         body.light-mode .article-header {
-            background-image: linear-gradient(135deg, #10B981, #1D4ED8); 
+            background-image: linear-gradient(135deg, #10B981, #1D4ED8);
         }
 
         body.light-mode .article-meta span {
@@ -546,23 +563,29 @@
                 flex-wrap: wrap;
                 justify-content: center;
             }
+
             .main-nav {
-                order: 3; /* Move main nav below logo and profile */
+                order: 3;
+                /* Move main nav below logo and profile */
                 flex-basis: 100%;
                 justify-content: center;
                 margin-top: 10px;
             }
+
             .hero-section {
                 flex-direction: column;
                 text-align: center;
             }
+
             .hero-buttons {
                 justify-content: center;
             }
+
             .hero-graphic {
                 margin-top: 40px;
                 max-width: 90%;
             }
+
             .article-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -572,30 +595,37 @@
             .hero-title {
                 font-size: 2.5rem;
             }
+
             .hero-buttons {
                 flex-direction: column;
             }
+
             .article-grid {
                 grid-template-columns: 1fr;
             }
+
             .profile-nav {
                 font-size: 0.8rem;
                 gap: 10px;
             }
         }
+
         @media (max-width: 576px) {
             .nav-content {
                 padding-top: 10px;
                 padding-bottom: 10px;
                 height: auto;
             }
+
             header {
                 height: auto;
             }
+
             .main-nav {
                 gap: 10px;
                 flex-wrap: wrap;
             }
+
             .logo {
                 flex-basis: 100%;
                 margin-bottom: 10px;
@@ -603,22 +633,23 @@
         }
     </style>
 </head>
+
 <body>
 
     <header>
         <div class="container nav-content">
             <div class="logo">Stego-Secure</div>
-            
+
             <nav class="main-nav">
-                <a href="home2.html" class="active">Home</a>
+                <a href="index.html" class="active">Home</a>
                 <a href="steganography_tool.html">Steganography Tool</a>
                 <a href="aboutus.html">About Us</a>
                 <a href="contactus.html">Contact Us</a>
             </nav>
-            
+
             <div class="profile-nav">
                 <button id="theme-toggle" aria-label="Toggle light/dark mode">
-                    <i class="fas fa-sun"></i> 
+                    <i class="fas fa-sun"></i>
                 </button>
                 <a href="sign in.html">Sign In</a>
                 <a href="sign up.html" class="btn btn-primary btn-small">Sign Up</a>
@@ -632,7 +663,8 @@
                 <span class="hero-tag"><i class="fas fa-lock-open"></i> Advanced Image Steganography</span>
                 <h1 class="hero-title">Hide Data in Plain Sight</h1>
                 <p class="hero-description">
-                    Secure your sensitive information using cutting-edge steganography technology. Hide secrets, documents, and data within ordinary images without detection.
+                    Secure your sensitive information using cutting-edge steganography technology. Hide secrets,
+                    documents, and data within ordinary images without detection.
                 </p>
                 <div class="hero-buttons">
                     <a href="steganography_tool.html" class="btn btn-primary">Launch Tool</a>
@@ -653,8 +685,9 @@
         <section id="why-choose" class="why-choose-section">
             <div class="container text-center">
                 <h2 class="section-title">Why Choose Stego-Secure</h2>
-                <p class="section-subtitle">Our advanced steganography platform offers unparalleled security and ease of use for all your data hiding needs.</p>
-                
+                <p class="section-subtitle">Our advanced steganography platform offers unparalleled security and ease of
+                    use for all your data hiding needs.</p>
+
                 <div class="feature-grid">
                     <div class="feature-card">
                         <i class="fas fa-user-shield"></i>
@@ -693,10 +726,11 @@
         <section id="learn" class="learn-section">
             <div class="container text-center">
                 <h2 class="section-title">Learn About Steganography</h2>
-                <p class="section-subtitle">Discover the fascinating world of hidden data, security techniques, and digital privacy protection.</p>
-                
+                <p class="section-subtitle">Discover the fascinating world of hidden data, security techniques, and
+                    digital privacy protection.</p>
+
                 <div class="article-grid">
-                    
+
                     <div class="article-card">
                         <a href="blog1.html">
                             <div class="article-header">
@@ -706,12 +740,13 @@
                             <div class="article-content">
                                 <div class="article-meta"><span>Security</span><span>8 min read</span></div>
                                 <h3 class="article-title">Security Benefits of Image Steganography</h3>
-                                <p class="article-description">Understand how steganography enhances privacy beyond ordinary data encryption techniques.</p>
+                                <p class="article-description">Understand how steganography enhances privacy beyond
+                                    ordinary data encryption techniques.</p>
                                 <span class="read-more">Read More &rarr;</span>
                             </div>
                         </a>
                     </div>
-                    
+
                     <div class="article-card">
                         <a href="blog2.html">
                             <div class="article-header">
@@ -721,7 +756,8 @@
                             <div class="article-content">
                                 <div class="article-meta"><span>Technical</span><span>12 min read</span></div>
                                 <h3 class="article-title">Step-by-Step Steganography Tutorial</h3>
-                                <p class="article-description">A complete guide to using steganography tools effectively and securely for data protection.</p>
+                                <p class="article-description">A complete guide to using steganography tools effectively
+                                    and securely for data protection.</p>
                                 <span class="read-more">Read More &rarr;</span>
                             </div>
                         </a>
@@ -736,22 +772,25 @@
                             <div class="article-content">
                                 <div class="article-meta"><span>Features</span><span>10 min read</span></div>
                                 <h3 class="article-title">Key Features of Modern Steganography Tools</h3>
-                                <p class="article-description">Discover the essential features that make steganography tools powerful, undetectable, and user-friendly for data protection.</p>
+                                <p class="article-description">Discover the essential features that make steganography
+                                    tools powerful, undetectable, and user-friendly for data protection.</p>
                                 <span class="read-more">Read More &rarr;</span>
                             </div>
                         </a>
                     </div>
-                    
+
                     <div class="article-card">
                         <a href="blog4.html">
-                            <div class="article-header" style="background-image: linear-gradient(135deg, #4D4DFF, #7F5AF0);">
+                            <div class="article-header"
+                                style="background-image: linear-gradient(135deg, #4D4DFF, #7F5AF0);">
                                 <i class="fas fa-cogs"></i>
                                 <i class="fas fa-arrow-up-right-from-square arrow-icon"></i>
                             </div>
                             <div class="article-content">
                                 <div class="article-meta"><span>How-to Guide</span><span>9 min read</span></div>
                                 <h3 class="article-title">How Image Steganography Works</h3>
-                                <p class="article-description">Explore the mechanics of how steganography embeds hidden data within digital images at the pixel level.</p>
+                                <p class="article-description">Explore the mechanics of how steganography embeds hidden
+                                    data within digital images at the pixel level.</p>
                                 <span class="read-more">Read More &rarr;</span>
                             </div>
                         </a>
@@ -759,14 +798,16 @@
 
                     <div class="article-card">
                         <a href="blog5.html">
-                            <div class="article-header" style="background-image: linear-gradient(135deg, #4D4DFF, #7F5AF0);">
+                            <div class="article-header"
+                                style="background-image: linear-gradient(135deg, #4D4DFF, #7F5AF0);">
                                 <i class="fas fa-desktop"></i>
                                 <i class="fas fa-arrow-up-right-from-square arrow-icon"></i>
                             </div>
                             <div class="article-content">
                                 <div class="article-meta"><span>Examples</span><span>7 min read</span></div>
                                 <h3 class="article-title">Real-World Steganography Examples</h3>
-                                <p class="article-description">Explore practical applications of steganography in privacy and security contexts.</p>
+                                <p class="article-description">Explore practical applications of steganography in
+                                    privacy and security contexts.</p>
                                 <span class="read-more">Read More &rarr;</span>
                             </div>
                         </a>
@@ -774,14 +815,16 @@
 
                     <div class="article-card">
                         <a href="blog6.html">
-                            <div class="article-header" style="background-image: linear-gradient(135deg, #4D4DFF, #7F5AF0);">
+                            <div class="article-header"
+                                style="background-image: linear-gradient(135deg, #4D4DFF, #7F5AF0);">
                                 <i class="fas fa-graduation-cap"></i>
                                 <i class="fas fa-arrow-up-right-from-square arrow-icon"></i>
                             </div>
                             <div class="article-content">
                                 <div class="article-meta"><span>Research/Methods</span><span>15 min read</span></div>
                                 <h3 class="article-title">Advanced Steganography Methods</h3>
-                                <p class="article-description">Explore cutting-edge steganography methods for enhanced security and stealth.</p>
+                                <p class="article-description">Explore cutting-edge steganography methods for enhanced
+                                    security and stealth.</p>
                                 <span class="read-more">Read More &rarr;</span>
                             </div>
                         </a>
@@ -792,10 +835,11 @@
         </section>
 
     </main>
-    
+
     <footer>
         <div class="container">
-            <p>&copy; 2025 Stego-Secure. All rights reserved. | <a href="#privacy">Privacy Policy</a> | <a href="#terms">Terms of Service</a> | <a href="contactus.html">Contact Us</a></p>
+            <p>&copy; 2025 Stego-Secure. All rights reserved. | <a href="#privacy">Privacy Policy</a> | <a
+                    href="#terms">Terms of Service</a> | <a href="contactus.html">Contact Us</a></p>
         </div>
     </footer>
 
@@ -823,7 +867,7 @@
             // 2. Handle click
             toggleButton.addEventListener('click', () => {
                 body.classList.toggle('light-mode');
-                
+
                 // Update local storage and icon
                 let theme = 'dark';
                 if (body.classList.contains('light-mode')) {
@@ -839,4 +883,5 @@
         });
     </script>
 </body>
+
 </html>
