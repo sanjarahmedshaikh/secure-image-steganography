@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Stego-Secure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        /* CSS Variables - Dark Mode Default (Copied from main tool) */
+        :root {
+            --color-bg-dark: #0A192F;
+            --color-card-dark: #112240;
+            --color-primary: #64FFDA; /* Cyan/Green Accent */
+            --color-secondary: #7F5AF0;
+            --color-accent-blue: #4D4DFF; /* Primary Action Blue */
+            --color-text-light: #CCD6F6;
+            --color-text-dim: #8892B0;
+            --font-main: 'Poppins', sans-serif;
+            --header-height: 60px;
+            --color-error: #EF4444;
+        }
+
+        /* Light Mode Overrides (Matching main tool) */
+        body.light-mode {
+            --color-bg-dark: #FFFFFF;
+            --color-card-dark: #F0F4F8;
+            --color-text-light: #1E293B;
+            --color-text-dim: #64748B;
+            --color-primary: #1D4ED8; 
+            --color-accent-blue: #10B981; /* Primary Action Green */
+            --color-secondary: #007bff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-bg-dark);
+            color: var(--color-text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+            padding-top: var(--header-height);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--color-primary);
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: var(--color-accent-blue);
+        }
+        
+        /* Home Link Style */
+        .home-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 4px;
+            color: var(--color-primary); 
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-right: 15px;
+            border: 1px solid var(--color-primary);
+            transition: all 0.2s;
+        }
+        .home-link:hover {
+            background-color: var(--color-primary);
+            color: var(--color-bg-dark);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        /* Header - Replicate main tool look */
+        header {
+            background-color: var(--color-bg-dark);
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            border-bottom: 1px solid var(--color-card-dark);
+            z-index: 10;
+        }
+
+        .tool-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .tool-info h1 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--color-text-light);
+        }
+
+        /* --- ABOUT PAGE SPECIFIC STYLES --- */
+        .about-page {
+            padding: 50px 0;
+        }
+
+        .about-card {
+            background-color: var(--color-card-dark);
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .about-card h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--color-accent-blue);
+            text-align: center;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed var(--color-text-dim);
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--color-text-light);
+            border-left: 3px solid var(--color-primary);
+            padding-left: 10px;
+        }
+
+        .section p {
+            color: var(--color-text-dim);
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+        
+        .key-concept {
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+        
+        /* Icon grid for key features */
+        .feature-grid {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .feature-item {
+            width: 30%;
+        }
+        .feature-item i {
+            font-size: 2rem;
+            color: var(--color-accent-blue);
+            margin-bottom: 10px;
+        }
+        .feature-item p {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-text-light);
+        }
+
+        /* Responsiveness */
+        @media (max-width: 600px) {
+            .feature-grid {
+                flex-direction: column;
+                gap: 30px;
+            }
+            .feature-item {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container tool-header-content">
+            <div class="tool-info">
+                <h1>Steganography Tool</h1>
+                <p>Secure Communication Utilities</p>
+            </div>
+            
+            <div class="header-nav">
+                <a href="home2.html" class="home-link">
+                    <i class="fas fa-home" style="margin-right: 5px;"></i> Back to Home
+                </a>
+                
+                <button id="theme-toggle" aria-label="Toggle light/dark mode" style="background: none; border: none; color: var(--color-text-dim); font-size: 1.2rem; cursor: pointer; padding: 5px; line-height: 1;"><i class="fas fa-sun"></i></button>
+            </div>
+            
+        </div>
+    </header>
+
+    <main class="about-page">
+        <div class="container">
+            
+            <div class="about-card">
+                <h2>About Stego-Secure</h2>
+                
+                <div class="section">
+                    <h3>The Art of Steganography</h3>
+                    <p>
+                        <span class="key-concept">Steganography</span> is the art and science of hiding a secret message within an ordinary message or file, making its very existence unnoticeable. Unlike cryptography, which scrambles a message to make it unreadable, steganography conceals the communication channel itself.
+                    </p>
+                    <p>
+                        Our tool utilizes the **Least Significant Bit (LSB)** technique, a common and effective method for digital steganography. Data is embedded into the least important bits of an image's pixel data. This tiny, calculated change is **imperceptible** to the human eye, ensuring the cover image remains visually identical to the original.
+                    </p>
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-eye-slash"></i>
+                            <p>Concealed Existence</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-microchip"></i>
+                            <p>LSB Technology</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-lock"></i>
+                            <p>Password Protected</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Our Story and Mission</h3>
+                    <p>
+                        Stego-Secure was born from a passion for <span class="key-concept">digital privacy</span> and the challenge of secure, covert communication. Starting as a solo project by a developer fascinated with information security, the goal was simple: to create an accessible, powerful, client-side tool that puts control back into the user's hands.
+                    </p>
+                    <p>
+                        In a modern world where every digital action is increasingly monitored, we believe that <span class="key-concept">privacy is not a luxury, but a fundamental right</span>. Our mission is to empower individuals with the tools necessary to share information discreetly, ensuring your data remains between you and your intended recipient.
+                    </p>
+                    <p style="text-align: center; color: var(--color-primary); font-style: italic;">— Built by [Your Name/Team Name], Dedicated to Digital Freedom.</p>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+    
+    <script>
+        // Dummy Script for theme toggle to make it feel integrated
+        const body = document.body;
+        const themeToggle = document.getElementById('theme-toggle');
+
+        function loadTheme() {
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme === 'light') {
+                body.classList.add('light-mode');
+                themeToggle.querySelector('i').className = 'fas fa-moon';
+            } else {
+                body.classList.remove('light-mode');
+                themeToggle.querySelector('i').className = 'fas fa-sun';
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            let isLight = body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            loadTheme(); // Update icon based on new state
+        });
+        
+        loadTheme();
+    </script>
+
+</body>
+</html>

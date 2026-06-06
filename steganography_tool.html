@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steganography Tool</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
+    <style>
+        /* --- Global Styles --- */
+        :root {
+            --color-bg-dark: #0A192F;
+            --color-card-dark: #112240;
+            --color-primary: #64FFDA;
+            --color-secondary: #7F5AF0;
+            --color-accent-blue: #4D4DFF;
+            --color-text-light: #CCD6F6;
+            --color-text-dim: #8892B0;
+            --font-main: 'Poppins', sans-serif;
+            --header-height: 60px;
+            --color-error: #EF4444;
+        }
+
+        body.light-mode {
+            --color-bg-dark: #FFFFFF;
+            --color-card-dark: #F0F4F8;
+            --color-text-light: #1E293B;
+            --color-text-dim: #64748B;
+            --color-primary: #1D4ED8;
+            --color-accent-blue: #10B981;
+            --color-secondary: #007bff;
+            --color-error: #DC2626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-bg-dark);
+            color: var(--color-text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+            padding-top: var(--header-height);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background-color: var(--color-bg-dark);
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            border-bottom: 1px solid var(--color-card-dark);
+            z-index: 10;
+            transition: background-color 0.3s, border-bottom-color 0.3s;
+        }
+
+        .tool-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tool-info h1 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--color-text-light);
+        }
+
+        .tool-info p {
+            font-size: 0.75rem;
+            color: var(--color-text-dim);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #home-btn,
+        #theme-toggle {
+            background: none;
+            border: none;
+            color: var(--color-text-dim);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.3s;
+            padding: 5px;
+            line-height: 1;
+        }
+
+        #home-btn:hover,
+        #theme-toggle:hover {
+            color: var(--color-accent-blue);
+        }
+
+        .tool-page {
+            padding: 50px 0;
+        }
+
+        .mode-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            background-color: var(--color-card-dark);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .light-mode .mode-toggle {
+            background-color: var(--color-card-dark);
+        }
+
+        .mode-toggle button {
+            flex-grow: 1;
+            background: none;
+            border: none;
+            padding: 15px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-dim);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .mode-toggle button.active {
+            color: var(--color-text-light);
+            background-color: var(--color-accent-blue);
+            box-shadow: 0 4px 10px rgba(77, 77, 255, 0.3);
+        }
+
+        .light-mode .mode-toggle button.active {
+            color: white;
+            background-color: var(--color-accent-blue);
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .tool-card {
+            background-color: var(--color-card-dark);
+            border-radius: 8px;
+            padding: 30px;
+            min-height: 500px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .tool-card h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--color-text-light);
+            border-bottom: 1px solid #1e345a;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .light-mode .tool-card h2 {
+            border-bottom-color: #E2E8F0;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--color-text-light);
+        }
+
+        input[type="text"],
+        input[type="password"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--color-bg-dark);
+            border: 1px solid #233554;
+            border-radius: 4px;
+            color: var(--color-text-light);
+            font-family: var(--font-main);
+            resize: vertical;
+            transition: all 0.3s;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--color-accent-blue);
+            box-shadow: 0 0 0 1px var(--color-accent-blue);
+        }
+
+        .light-mode input[type="text"],
+        .light-mode input[type="password"],
+        .light-mode textarea {
+            background-color: #FFFFFF;
+            border-color: #CBD5E1;
+            color: #1E293B;
+        }
+
+        .file-upload-area {
+            border: 2px dashed #233554;
+            border-radius: 6px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--color-accent-blue);
+            background-color: #1a345a50;
+        }
+
+        .light-mode .file-upload-area:hover {
+            background-color: #E2E8F0;
+        }
+
+        .file-upload-area i {
+            font-size: 2rem;
+            color: var(--color-text-dim);
+            margin-bottom: 10px;
+        }
+
+        .file-upload-area p {
+            font-size: 0.85rem;
+            color: var(--color-text-dim);
+        }
+
+        .file-upload-area .file-type-note {
+            font-size: 0.75rem;
+            color: var(--color-text-dim);
+            margin-top: 8px;
+        }
+
+        #image-upload {
+            display: none;
+        }
+
+        .selected-file-text {
+            font-size: 0.85rem;
+            color: var(--color-primary);
+            margin-top: 10px;
+        }
+
+        .result-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            text-align: center;
+        }
+
+        .result-icon {
+            font-size: 3rem;
+            color: var(--color-text-dim);
+            margin-bottom: 20px;
+        }
+
+        .result-content p {
+            color: var(--color-text-dim);
+            font-size: 1rem;
+        }
+
+        .result-image-display {
+            max-width: 90%;
+            max-height: 300px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border: 2px solid var(--color-accent-blue);
+        }
+
+        #revealed-data-output {
+            width: 90%;
+            background: #1a345a;
+            border: 1px solid #233554;
+            color: var(--color-primary);
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+
+        .light-mode #revealed-data-output {
+            background: #E2E8F0;
+            color: var(--color-primary);
+            border: 1px solid #CBD5E1;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-main);
+            color: var(--color-text-light);
+            width: 100%;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .btn-primary {
+            background-color: var(--color-accent-blue);
+            box-shadow: 0 4px 15px rgba(77, 77, 255, 0.4);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: #6a6aff;
+            box-shadow: 0 6px 20px rgba(77, 77, 255, 0.6);
+        }
+
+        .light-mode .btn-primary {
+            background-color: var(--color-accent-blue);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .light-mode .btn-primary:hover:not(:disabled) {
+            background-color: #14C290;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+        }
+
+        .btn-primary:disabled {
+            background-color: #8892B0;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        #download-link {
+            width: 80%;
+            margin-top: 20px;
+        }
+
+        #info-banner {
+            background-color: #0A192F;
+            color: #EF4444;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+            border: 1px solid #EF4444;
+            font-size: 0.9rem;
+            text-align: left;
+            align-items: center;
+            gap: 10px;
+            display: flex;
+        }
+
+        .light-mode #info-banner {
+            background-color: #FEE2E2;
+            color: #DC2626;
+            border-color: #DC2626;
+        }
+
+        @media (max-width: 900px) {
+            .tool-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container tool-header-content">
+            <div class="tool-info">
+                <h1>Steganography Tool</h1>
+                <p>Hide data in any image using client-side LSB steganography.</p>
+            </div>
+            <div class="header-actions">
+                <a href="home2.html" id="home-btn" aria-label="Back to Homepage">
+                    <i class="fas fa-home"></i>
+                </a>
+                <button id="theme-toggle" aria-label="Toggle light/dark mode">
+                    <!-- Icon will be set by JS -->
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="tool-page">
+        <div class="container">
+            <div class="mode-toggle">
+                <button id="mode-hide-btn" class="active">
+                    <i class="fas fa-eye-slash"></i> Hide Data
+                </button>
+                <button id="mode-reveal-btn">
+                    <i class="fas fa-eye"></i> Reveal Data
+                </button>
+            </div>
+
+            <div class="tool-grid">
+                <div class="tool-card">
+                    <h2 id="form-title">
+                        <!-- Title will be set by JS -->
+                    </h2>
+                    <form id="stego-form">
+                        <div class="input-group">
+                            <label for="image-upload-area">
+                                <i class="fas fa-image"></i>Select Image
+                            </label>
+                            <div id="image-upload-area" class="file-upload-area">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Click to upload an Image</p>
+                                <p class="file-type-note">
+                                    <i class="fas fa-info-circle"></i>
+                                    All image formats are accepted, but <strong>PNG</strong> is recommended for best
+                                    results.
+                                </p>
+                                <input type="file" id="image-upload" accept="image/*" required>
+                            </div>
+                            <p id="selected-file-text" class="selected-file-text" style="display: none;"></p>
+                        </div>
+
+                        <div id="secret-data-group" class="input-group">
+                            <label for="secret-data">
+                                <i class="fas fa-file-alt"></i>Secret Data
+                            </label>
+                            <textarea id="secret-data" rows="4"
+                                placeholder="Enter the text, numbers, or data you want to hide..." required></textarea>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="encryption-key">
+                                <i class="fas fa-key"></i>Encryption Key (Password)
+                            </label>
+                            <input type="password" id="encryption-key" placeholder="Enter a secure password..."
+                                required>
+                            <p style="font-size: 0.75rem; color: var(--color-text-dim); margin-top: 5px;">
+                                This key is used to hide/reveal the data.
+                            </p>
+                        </div>
+
+                        <button type="submit" id="submit-btn" class="btn btn-primary">
+                            <!-- Button text will be set by JS -->
+                        </button>
+
+                        <div id="info-banner" style="display: none;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span id="info-banner-text"></span>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tool-card">
+                    <h2><i class="fas fa-clipboard-check"></i>Result</h2>
+                    <div id="result-content" class="result-content">
+                        <!-- Result content will be injected by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- REWRITTEN STEGANOGRAPHY ENGINE v2 (Web Crypto API) ---
+
+        /**
+         * Derives a cryptographic key from a password and salt using PBKDF2.
+         * @param {string} password - The user's password.
+         * @param {Uint8Array} salt - A random salt.
+         * @returns {Promise<CryptoKey>} A key suitable for AES-GCM.
+         */
+        const deriveKey = async (password, salt) => {
+            const encoder = new TextEncoder();
+            const keyMaterial = await window.crypto.subtle.importKey(
+                'raw',
+                encoder.encode(password),
+                { name: 'PBKDF2' },
+                false,
+                ['deriveKey']
+            );
+            return window.crypto.subtle.deriveKey(
+                {
+                    name: 'PBKDF2',
+                    salt: salt,
+                    iterations: 100000,
+                    hash: 'SHA-256',
+                },
+                keyMaterial,
+                { name: 'AES-GCM', length: 256 },
+                true,
+                ['encrypt', 'decrypt']
+            );
+        };
+
+        /**
+         * Encrypts a message using AES-GCM with a derived key.
+         * @param {string} message - The plaintext message to encrypt.
+         * @param {string} password - The password to derive the key from.
+         * @returns {Promise<string>} A JSON string containing the encrypted data and metadata.
+         */
+        const encryptMessage = async (message, password) => {
+            const salt = window.crypto.getRandomValues(new Uint8Array(16));
+            const iv = window.crypto.getRandomValues(new Uint8Array(12));
+            const key = await deriveKey(password, salt);
+
+            const encoder = new TextEncoder();
+            const encodedMessage = encoder.encode(message);
+
+            const ciphertext = await window.crypto.subtle.encrypt(
+                { name: 'AES-GCM', iv: iv },
+                key,
+                encodedMessage
+            );
+
+            const bundle = {
+                salt: btoa(String.fromCharCode.apply(null, salt)),
+                iv: btoa(String.fromCharCode.apply(null, iv)),
+                ciphertext: btoa(String.fromCharCode.apply(null, new Uint8Array(ciphertext))),
+            };
+            return JSON.stringify(bundle);
+        };
+
+        /**
+         * Decrypts a bundled message using AES-GCM.
+         * @param {string} jsonPayload - The JSON string containing salt, iv, and ciphertext.
+         * @param {string} password - The password to derive the decryption key.
+         * @returns {Promise<string>} The original plaintext message.
+         */
+        const decryptMessage = async (jsonPayload, password) => {
+            try {
+                const bundle = JSON.parse(jsonPayload);
+                const salt = new Uint8Array(atob(bundle.salt).split('').map(c => c.charCodeAt(0)));
+                const iv = new Uint8Array(atob(bundle.iv).split('').map(c => c.charCodeAt(0)));
+                const ciphertext = new Uint8Array(atob(bundle.ciphertext).split('').map(c => c.charCodeAt(0)));
+                const key = await deriveKey(password, salt);
+                const decryptedBuffer = await window.crypto.subtle.decrypt(
+                    { name: 'AES-GCM', iv: iv },
+                    key,
+                    ciphertext
+                );
+                const decoder = new TextDecoder();
+                return decoder.decode(decryptedBuffer);
+            } catch (error) {
+                console.error("Decryption failed:", error);
+                throw new Error("Decryption failed. The key is likely incorrect.");
+            }
+        };
+
+        // This constant defines the end-of-message marker. 8 consecutive null bytes.
+        const EOM_MARKER = new Uint8Array(8).fill(0);
+
+        /**
+         * Encodes an encrypted message into an image's pixel data.
+         * @param {string} message - The plaintext message.
+         * @param {string} imageUrl - The data URL of the source image.
+         * @param {string} password - The encryption password.
+         * @returns {Promise<string>} The data URL of the new image with hidden data.
+         */
+        const encodeAsync = (message, imageUrl, password) => {
+            return new Promise((resolve, reject) => {
+                const image = new Image();
+                image.crossOrigin = "Anonymous";
+                image.src = imageUrl;
+                image.onload = async () => {
+                    try {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        canvas.width = image.width;
+                        canvas.height = image.height;
+
+                        // IMPORTANT: Fill background to handle transparent images (e.g. PNGs)
+                        ctx.fillStyle = 'white';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(image, 0, 0);
+
+                        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                        const pixels = imageData.data;
+
+                        const encryptedPayload = await encryptMessage(message, password);
+                        const dataBytes = new TextEncoder().encode(encryptedPayload);
+
+                        // Combine the data with the End-of-Message marker
+                        const bytesToHide = new Uint8Array(dataBytes.length + EOM_MARKER.length);
+                        bytesToHide.set(dataBytes);
+                        bytesToHide.set(EOM_MARKER, dataBytes.length);
+
+                        // Use 3 color channels (RGB) per pixel, skipping the Alpha channel
+                        const availableBits = (pixels.length / 4) * 3;
+                        const requiredBits = bytesToHide.length * 8;
+
+                        if (requiredBits > availableBits) {
+                            return reject(new Error("Message is too large for this image."));
+                        }
+
+                        let bitIndex = 0;
+                        for (const byte of bytesToHide) {
+                            for (let i = 0; i < 8; i++) {
+                                const bit = (byte >> i) & 1;
+                                const pixelIndex = Math.floor(bitIndex / 3);
+                                const channelIndex = bitIndex % 3;
+                                const dataIndex = (pixelIndex * 4) + channelIndex;
+
+                                pixels[dataIndex] = (pixels[dataIndex] & 0xFE) | bit;
+                                bitIndex++;
+                            }
+                        }
+
+                        ctx.putImageData(imageData, 0, 0);
+                        // Output as PNG for better compatibility and lossless quality
+                        resolve(canvas.toDataURL('image/png'));
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                image.onerror = () => reject(new Error("Could not load the image."));
+            });
+        };
+
+        /**
+         * Decodes a hidden message from an image's pixel data.
+         * @param {string} imageUrl - The data URL of the source image.
+         * @param {string} password - The decryption password.
+         * @returns {Promise<string>} The revealed plaintext message.
+         */
+        const decodeAsync = (imageUrl, password) => {
+            return new Promise((resolve, reject) => {
+                const image = new Image();
+                image.crossOrigin = "Anonymous";
+                image.src = imageUrl;
+                image.onload = async () => {
+                    try {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        canvas.width = image.width;
+                        canvas.height = image.height;
+
+                        // IMPORTANT: Fill background to ensure consistent pixel data reading
+                        ctx.fillStyle = 'white';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(image, 0, 0);
+
+                        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                        const pixels = imageData.data;
+
+                        const revealedBytes = [];
+                        let currentByte = 0;
+                        let bitCount = 0;
+
+                        const availableBits = (pixels.length / 4) * 3;
+
+                        for (let bitIndex = 0; bitIndex < availableBits; bitIndex++) {
+                            const pixelIndex = Math.floor(bitIndex / 3);
+                            const channelIndex = bitIndex % 3;
+                            const dataIndex = (pixelIndex * 4) + channelIndex;
+
+                            const bit = pixels[dataIndex] & 1;
+                            currentByte |= (bit << bitCount);
+                            bitCount++;
+
+                            if (bitCount === 8) {
+                                revealedBytes.push(currentByte);
+
+                                // Check if the last N bytes match the EOM marker
+                                if (revealedBytes.length >= EOM_MARKER.length) {
+                                    const lastBytes = revealedBytes.slice(-EOM_MARKER.length);
+                                    let isEOM = true;
+                                    for (let i = 0; i < EOM_MARKER.length; i++) {
+                                        if (lastBytes[i] !== EOM_MARKER[i]) {
+                                            isEOM = false;
+                                            break;
+                                        }
+                                    }
+
+                                    if (isEOM) {
+                                        // Found the marker, now get the actual payload
+                                        const dataBytes = new Uint8Array(revealedBytes.slice(0, -EOM_MARKER.length));
+                                        const encryptedPayload = new TextDecoder().decode(dataBytes);
+                                        const decryptedMessage = await decryptMessage(encryptedPayload, password);
+                                        return resolve(decryptedMessage);
+                                    }
+                                }
+
+                                currentByte = 0;
+                                bitCount = 0;
+                            }
+                        }
+
+                        // If loop finishes without finding EOM marker
+                        reject(new Error("No hidden data found in this image."));
+
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                image.onerror = () => reject(new Error("Could not load the image."));
+            });
+        };
+
+        // --- UI LOGIC ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- State Management ---
+            let appState = {
+                mode: 'hide', // 'hide' or 'reveal'
+                theme: localStorage.getItem('theme') || 'dark',
+                selectedFile: null,
+                imageUrl: '',
+                isProcessing: false,
+            };
+
+            // --- DOM Element References ---
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const modeHideBtn = document.getElementById('mode-hide-btn');
+            const modeRevealBtn = document.getElementById('mode-reveal-btn');
+            const formTitle = document.getElementById('form-title');
+            const stegoForm = document.getElementById('stego-form');
+            const imageUploadArea = document.getElementById('image-upload-area');
+            const imageUploadInput = document.getElementById('image-upload');
+            const selectedFileText = document.getElementById('selected-file-text');
+            const secretDataGroup = document.getElementById('secret-data-group');
+            const secretDataInput = document.getElementById('secret-data');
+            const encryptionKeyInput = document.getElementById('encryption-key');
+            const submitBtn = document.getElementById('submit-btn');
+            const infoBanner = document.getElementById('info-banner');
+            const infoBannerText = document.getElementById('info-banner-text');
+            const resultContent = document.getElementById('result-content');
+
+            // --- UI Rendering Function ---
+            const render = () => {
+                // 1. Update Theme
+                document.body.className = appState.theme === 'light' ? 'light-mode' : '';
+                themeToggleBtn.innerHTML = appState.theme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+
+                // 2. Update Mode Toggle Buttons
+                modeHideBtn.classList.toggle('active', appState.mode === 'hide');
+                modeRevealBtn.classList.toggle('active', appState.mode === 'reveal');
+
+                // 3. Update Form based on Mode
+                if (appState.mode === 'hide') {
+                    formTitle.innerHTML = `<i class="fas fa-shield-halved"></i> Hide Data in Image`;
+                    secretDataGroup.style.display = 'block';
+                    secretDataInput.required = true;
+                } else {
+                    formTitle.innerHTML = `<i class="fas fa-magnifying-glass"></i> Reveal Data from Image`;
+                    secretDataGroup.style.display = 'none';
+                    secretDataInput.required = false;
+                }
+
+                // 4. Update Submit Button
+                submitBtn.disabled = appState.isProcessing;
+                if (appState.isProcessing) {
+                    submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processing...`;
+                } else if (appState.mode === 'hide') {
+                    submitBtn.innerHTML = `<i class="fas fa-lock"></i> Hide Data in Image`;
+                } else {
+                    submitBtn.innerHTML = `<i class="fas fa-lock-open"></i> Reveal Data`;
+                }
+            };
+
+            // --- Result Rendering Functions ---
+            const renderIdleResult = () => {
+                resultContent.innerHTML = `
+                    <i class="fas fa-file-invoice result-icon"></i>
+                    <p>Your result will appear here after processing.</p>
+                `;
+            };
+
+            const renderProcessingResult = () => {
+                resultContent.innerHTML = `
+                    <i class="fas fa-spinner fa-spin result-icon"></i>
+                    <p>Processing...</p>
+                `;
+            };
+
+            const renderErrorResult = (message) => {
+                resultContent.innerHTML = `
+                    <i class="fas fa-times-circle result-icon" style="color: var(--color-error);"></i>
+                    <p style="color: var(--color-error);">${message}</p>
+                `;
+            };
+
+            const renderSuccessResult = (data) => {
+                if (appState.mode === 'hide') {
+                    resultContent.innerHTML = `
+                        <i class="fas fa-check-circle result-icon" style="color: var(--color-accent-blue);"></i>
+                        <p style="color: var(--color-accent-blue);">Data Hidden Successfully!</p>
+                        <img id="result-image" class="result-image-display" alt="Steganographic Result" src="${data.imageUrl}">
+                        <a id="download-link" class="btn btn-primary" href="${data.imageUrl}" download="stego-result.png">
+                            <i class="fas fa-download"></i> Download Image
+                        </a>
+                    `;
+                } else { // reveal mode
+                    resultContent.innerHTML = `
+                        <i class="fas fa-lock-open result-icon" style="color: var(--color-primary);"></i>
+                        <p style="color: var(--color-primary);">Data Revealed Successfully!</p>
+                        <textarea id="revealed-data-output" rows="10" readonly>${data.revealedText}</textarea>
+                    `;
+                }
+            };
+
+            // --- Banner Control ---
+            const showBanner = (message) => {
+                infoBannerText.textContent = message;
+                infoBanner.style.display = 'flex';
+            };
+            const hideBanner = () => {
+                infoBanner.style.display = 'none';
+            };
+
+            // --- Event Handlers ---
+            const handleThemeToggle = () => {
+                appState.theme = appState.theme === 'dark' ? 'light' : 'dark';
+                localStorage.setItem('theme', appState.theme);
+                render();
+            };
+
+            const handleModeChange = (newMode) => {
+                if (appState.mode === newMode) return;
+                appState.mode = newMode;
+                // Reset form state
+                appState.selectedFile = null;
+                appState.imageUrl = '';
+                stegoForm.reset();
+                selectedFileText.style.display = 'none';
+                imageUploadArea.style.borderColor = '#233554';
+                hideBanner();
+                renderIdleResult();
+                render();
+            };
+
+            const handleFileChange = (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    appState.selectedFile = file;
+                    hideBanner();
+                    const reader = new FileReader();
+                    reader.onload = (e) => appState.imageUrl = e.target.result;
+                    reader.readAsDataURL(file);
+
+                    selectedFileText.textContent = `Selected: ${file.name}`;
+                    selectedFileText.style.display = 'block';
+                    imageUploadArea.style.borderColor = 'var(--color-accent-blue)';
+                }
+            };
+
+            const handleSubmit = async (event) => {
+                event.preventDefault();
+                const secretData = secretDataInput.value;
+                const encryptionKey = encryptionKeyInput.value;
+
+                if (!appState.selectedFile || !encryptionKey || (appState.mode === 'hide' && !secretData)) {
+                    showBanner('Error: Please fill all required fields and select an image.');
+                    return;
+                }
+
+                appState.isProcessing = true;
+                hideBanner();
+                renderProcessingResult();
+                render();
+
+                try {
+                    if (appState.mode === 'hide') {
+                        const stegoImage = await encodeAsync(secretData, appState.imageUrl, encryptionKey);
+                        renderSuccessResult({ imageUrl: stegoImage });
+                    } else { // mode === 'reveal'
+                        const revealed = await decodeAsync(appState.imageUrl, encryptionKey);
+                        renderSuccessResult({ revealedText: revealed });
+                    }
+                } catch (error) {
+                    renderErrorResult('An error occurred during processing.');
+                    showBanner(`Steganography Error: ${error.message}`);
+                } finally {
+                    appState.isProcessing = false;
+                    render();
+                }
+            };
+
+            // --- Initial Setup ---
+            themeToggleBtn.addEventListener('click', handleThemeToggle);
+            modeHideBtn.addEventListener('click', () => handleModeChange('hide'));
+            modeRevealBtn.addEventListener('click', () => handleModeChange('reveal'));
+            imageUploadArea.addEventListener('click', () => imageUploadInput.click());
+            imageUploadInput.addEventListener('change', handleFileChange);
+            stegoForm.addEventListener('submit', handleSubmit);
+
+            // Initial render on page load
+            renderIdleResult();
+            render();
+        });
+    </script>
+</body>
+
+</html>

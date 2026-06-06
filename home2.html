@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stego-Secure - Hide Data in Plain Sight</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        /* CSS Reset and Variables */
+        :root {
+            --color-bg-dark: #0A192F; /* Deep Navy Blue */
+            --color-card-dark: #112240; /* Slightly lighter navy for cards */
+            --color-primary: #64FFDA; /* Neon Green for accents/links */
+            --color-secondary: #7F5AF0; /* Vibrant Purple for main buttons/gradients */
+            --color-accent-blue: #4D4DFF; /* Blue used in gradients */
+            --color-text-light: #CCD6F6; /* Light gray for main text */
+            --color-text-dim: #8892B0; /* Dimmer gray for small text */
+            --font-main: 'Poppins', sans-serif;
+            --header-height: 80px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-bg-dark);
+            color: var(--color-text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s; /* Smooth transition for theme change */
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Utility Classes */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* 1. Header/Navigation */
+        header {
+            background-color: var(--color-bg-dark);
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-text-light);
+        }
+        
+        /* New Navigation Links Container */
+        .main-nav {
+            display: flex;
+            gap: 20px;
+            font-size: 0.95rem;
+        }
+        
+        .main-nav a {
+            color: var(--color-text-dim);
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        
+        .main-nav a:hover,
+        .main-nav a.active {
+            color: var(--color-text-light);
+        }
+
+        .profile-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 0.9rem;
+        }
+
+        .profile-nav a {
+            color: var(--color-text-dim);
+            transition: color 0.3s;
+        }
+
+        .profile-nav a:hover {
+            color: var(--color-text-light);
+        }
+
+        .profile-nav .user-icon {
+            width: 30px;
+            height: 30px;
+            background-color: var(--color-secondary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* 2. Hero Section */
+        .hero-section {
+            padding: 100px 0 100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 500px;
+        }
+
+        .hero-tag {
+            color: var(--color-text-light);
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            display: inline-block;
+            padding: 5px 10px;
+            border: 1px solid #4D4DFF;
+            border-radius: 5px;
+            background-color: #4d4dff1a;
+        }
+        
+        .hero-tag i {
+            color: #4D4DFF;
+            margin-right: 5px;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-description {
+            color: var(--color-text-dim);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-main);
+            color: var(--color-text-light);
+        }
+
+        .btn-primary {
+            background-color: var(--color-accent-blue);
+            box-shadow: 0 4px 15px rgba(77, 77, 255, 0.4);
+        }
+
+        .btn-primary:hover {
+            background-color: #6a6aff;
+            box-shadow: 0 6px 20px rgba(77, 77, 255, 0.6);
+        }
+
+        .btn-secondary-link {
+            color: var(--color-text-dim);
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding-bottom: 2px;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary-link:hover {
+            color: var(--color-accent-blue);
+            border-color: var(--color-accent-blue);
+        }
+        
+        .hero-graphic {
+            flex: 1;
+            max-width: 600px;
+        }
+        
+        .graphic-mockup {
+            width: 100%;
+            height: 300px;
+            background-color: #112240;
+            border-radius: 10px;
+            border: 1px solid #233554;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .graphic-mockup::before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+            background-color: #0A192F;
+            border-bottom: 1px solid #233554;
+            color: var(--color-text-dim);
+            font-size: 0.9rem;
+            text-align: right;
+        }
+        
+        .graphic-mockup .screen-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            height: 85%;
+            background-image: url('lock.jpg');
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            border: 1px solid #233554;
+        }
+
+        .hero-sub-links {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: var(--color-text-dim);
+        }
+        .hero-sub-links a {
+            color: var(--color-primary);
+            margin-right: 15px;
+            transition: color 0.3s;
+        }
+        .hero-sub-links a:hover {
+             color: var(--color-accent-blue);
+        }
+
+        /* 3. Why Choose Stego-Secure Section */
+        .why-choose-section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--color-text-light);
+        }
+
+        .section-subtitle {
+            color: var(--color-text-dim);
+            margin-bottom: 50px;
+            font-size: 1.1rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background-color: var(--color-card-dark);
+            padding: 30px;
+            border-radius: 8px;
+            transition: transform 0.3s, background-color 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background-color: #1a345a;
+        }
+
+        .feature-card i {
+            font-size: 1.8rem;
+            color: var(--color-accent-blue);
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--color-text-light);
+        }
+
+        .feature-card p {
+            color: var(--color-text-dim);
+            font-size: 0.95rem;
+        }
+
+        /* 4. Learn About Steganography Section */
+        .learn-section {
+            padding: 80px 0;
+        }
+
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px 20px;
+        }
+
+        .article-card {
+            background-color: var(--color-card-dark);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .article-header {
+            height: 150px;
+            background-image: linear-gradient(135deg, #7F5AF0, #4D4DFF); 
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--color-text-light);
+        }
+        
+        .article-header i {
+            font-size: 2.5rem;
+            opacity: 0.2;
+        }
+        
+        .article-header .arrow-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: var(--color-text-light);
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        .article-card:hover .arrow-icon {
+            opacity: 1;
+        }
+
+        .article-content {
+            padding: 20px;
+        }
+        
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--color-text-light);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .article-meta span {
+            background-color: #1a345a;
+            padding: 4px 10px;
+            border-radius: 20px;
+            color: #64FFDA;
+            font-weight: 400;
+        }
+
+        .article-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--color-text-light);
+        }
+
+        .article-description {
+            color: var(--color-text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            min-height: 40px; 
+        }
+
+        .read-more {
+            display: inline-block;
+            color: var(--color-accent-blue);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .read-more:hover {
+            color: #9275F3;
+            text-decoration: underline;
+        }
+        
+        /* 5. Footer */
+        footer {
+            background-color: #05101E; 
+            padding: 30px 0;
+            border-top: 1px solid #112240;
+            color: var(--color-text-dim);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        footer a {
+            color: var(--color-text-dim);
+            margin: 0 10px;
+        }
+        
+        footer a:hover {
+            color: var(--color-accent-blue);
+        }
+
+        /* --- New Additions for Toggle and Light Mode --- */
+
+        /* Style for the Sign Up button in the nav bar */
+        .profile-nav .btn-small {
+            padding: 8px 15px; 
+            font-size: 0.9rem; 
+            margin-left: 10px;
+        }
+
+        /* Style for the Light/Dark Mode Toggle Button */
+        #theme-toggle {
+            background: none;
+            border: none;
+            color: var(--color-text-dim);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.3s;
+            padding: 5px;
+            line-height: 1;
+            margin-right: 5px;
+            order: -1; /* Place toggle first in flex container */
+        }
+
+        #theme-toggle:hover {
+            color: var(--color-accent-blue);
+        }
+
+        /* Light Mode Overrides */
+        body.light-mode {
+            --color-bg-dark: #FFFFFF;
+            --color-card-dark: #F0F4F8;
+            --color-text-light: #1E293B;
+            --color-text-dim: #64748B;
+            --color-primary: #1D4ED8; 
+            --color-accent-blue: #10B981; /* Adjust primary accent for light mode */
+            --color-secondary: #007bff; /* Adjust secondary accent for light mode */
+        }
+
+        body.light-mode header,
+        body.light-mode .graphic-mockup::before {
+            background-color: var(--color-bg-dark);
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        body.light-mode footer {
+            background-color: #F8FAFC;
+            border-top: 1px solid #E2E8F0;
+        }
+
+        body.light-mode .graphic-mockup,
+        body.light-mode .graphic-mockup .screen-content {
+            background-color: var(--color-card-dark);
+            border-color: #CBD5E1;
+        }
+
+        body.light-mode .graphic-mockup .screen-content::after {
+            border: 5px solid var(--color-accent-blue);
+            border-top-color: transparent;
+        }
+
+        body.light-mode .hero-tag {
+            border: 1px solid var(--color-accent-blue);
+            background-color: #10b9811a;
+        }
+        body.light-mode .hero-tag i {
+            color: var(--color-accent-blue);
+        }
+
+        body.light-mode .feature-card:hover {
+            transform: translateY(-5px);
+            background-color: #E2E8F0;
+        }
+
+        body.light-mode .btn-primary {
+            background-color: var(--color-accent-blue);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        body.light-mode .btn-primary:hover {
+            background-color: #14C290;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+        }
+
+        body.light-mode .read-more:hover {
+            color: #0d8b67;
+        }
+
+        body.light-mode .article-header {
+            background-image: linear-gradient(135deg, #10B981, #1D4ED8); 
+        }
+
+        body.light-mode .article-meta span {
+            background-color: #C7D2FE;
+            color: #1E40AF;
+        }
+
+        /* --- End New Additions for Toggle and Light Mode --- */
+
+
+        /* Responsiveness */
+        @media (max-width: 1024px) {
+            .nav-content {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .main-nav {
+                order: 3; /* Move main nav below logo and profile */
+                flex-basis: 100%;
+                justify-content: center;
+                margin-top: 10px;
+            }
+            .hero-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-buttons {
+                justify-content: center;
+            }
+            .hero-graphic {
+                margin-top: 40px;
+                max-width: 90%;
+            }
+            .article-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            .hero-buttons {
+                flex-direction: column;
+            }
+            .article-grid {
+                grid-template-columns: 1fr;
+            }
+            .profile-nav {
+                font-size: 0.8rem;
+                gap: 10px;
+            }
+        }
+        @media (max-width: 576px) {
+            .nav-content {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                height: auto;
+            }
+            header {
+                height: auto;
+            }
+            .main-nav {
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+            .logo {
+                flex-basis: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-content">
+            <div class="logo">Stego-Secure</div>
+            
+            <nav class="main-nav">
+                <a href="home2.html" class="active">Home</a>
+                <a href="steganography_tool.html">Steganography Tool</a>
+                <a href="aboutus.html">About Us</a>
+                <a href="contactus.html">Contact Us</a>
+            </nav>
+            
+            <div class="profile-nav">
+                <button id="theme-toggle" aria-label="Toggle light/dark mode">
+                    <i class="fas fa-sun"></i> 
+                </button>
+                <a href="sign in.html">Sign In</a>
+                <a href="sign up.html" class="btn btn-primary btn-small">Sign Up</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section container">
+            <div class="hero-content">
+                <span class="hero-tag"><i class="fas fa-lock-open"></i> Advanced Image Steganography</span>
+                <h1 class="hero-title">Hide Data in Plain Sight</h1>
+                <p class="hero-description">
+                    Secure your sensitive information using cutting-edge steganography technology. Hide secrets, documents, and data within ordinary images without detection.
+                </p>
+                <div class="hero-buttons">
+                    <a href="steganography_tool.html" class="btn btn-primary">Launch Tool</a>
+                    <a href="#learn-security" class="btn-secondary-link">Learn More</a>
+                </div>
+                <div class="hero-sub-links">
+                    <a href="#256-encryption"><i class="fas fa-lock"></i> AES-256 Encryption</a>
+                    <a href="#format-support"><i class="fas fa-image"></i> Formats Support</a>
+                </div>
+            </div>
+            <div class="hero-graphic">
+                <div class="graphic-mockup">
+                    <div class="screen-content"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="why-choose" class="why-choose-section">
+            <div class="container text-center">
+                <h2 class="section-title">Why Choose Stego-Secure</h2>
+                <p class="section-subtitle">Our advanced steganography platform offers unparalleled security and ease of use for all your data hiding needs.</p>
+                
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-user-shield"></i>
+                        <h3>Military-Grade Security</h3>
+                        <p>AES-256 encryption ensures your hidden data remains completely secure and unbreakable.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-eye-slash"></i>
+                        <h3>Invisible to Detection</h3>
+                        <p>Our advanced algorithms ensure your hidden data completely invisible.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-key"></i>
+                        <h3>Password Protection</h3>
+                        <p>Add an extra layer of security, with custom encryption keys and password protection.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Lightning Fast</h3>
+                        <p>Ability to hide data in seconds with our optimized algorithms.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-images"></i>
+                        <h3>Multiple Formats</h3>
+                        <p>Supports JPEG, PNG, BMP, and other popular image formats for maximum flexibility.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-cloud-download-alt"></i>
+                        <h3>Easy Recovery</h3>
+                        <p>Retrieve your hidden data anytime with the correct decryption key.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="learn" class="learn-section">
+            <div class="container text-center">
+                <h2 class="section-title">Learn About Steganography</h2>
+                <p class="section-subtitle">Discover the fascinating world of hidden data, security techniques, and digital privacy protection.</p>
+                
+                <div class="article-grid">
+                    
+                    <div class="article-card">
+                        <a href="blog1.html">
+                            <div class="article-header">
+                                <i class="fas fa-lock"></i>
+                                <i class="fas fa-arrow-up-right-from-square arrow-icon"></i>
+                            </div>
+                            <div class="article-content">
+                                <div class="article-meta"><span>Security</span><span>8 min read</span></div>
+                                <h3 class="article-title">Security Benefits of Image Steganography</h3>
+                                <p class="article-description">Understand how steganography enhances privacy beyond ordinary data encryption techniques.</p>
+                                <span class="read-more">Read More &rarr;</span>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="article-card">
+                        <a href="blog2.html">
+                            <div class="article-header">
+                                <i class="fas fa-flask"></i>
+                                <i class="fas fa-arrow-up-right-from-square arrow-icon"></i>
+                            </div>
+                            <div class="article-content">
+                                <div class="article-meta"><span>Technical</span><span>12 min read</span></div>
+                                <h3 class="article-title">Step-by-Step Steganography Tutorial</h3>
+                                <p class="article-description">A complete guide to using steganography tools effectively and securely for data protection.</p>
+                                <span class="read-more">Read More &rarr;</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="article-card">
+                        <a href="blog3.html">
+                            <div class="article-header">
+                                <i class="fas fa-sliders-h"></i>
+                                <i class="fas fa-arrow-up-right-from-square arrow-icon"></i>
+                            </div>
+                            <div class="article-content">
+                                <div class="article-meta"><span>Features</span><span>10 min read</span></div>
+                                <h3 class="article-title">Key Features of Modern Steganography Tools</h3>
+                                <p class="article-description">Discover the essential features that make steganography tools powerful, undetectable, and user-friendly for data protection.</p>
+                                <span class="read-more">Read More &rarr;</span>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="article-card">
+                        <a href="blog4.html">
+                            <div class="article-header" style="background-image: linear-gradient(135deg, #4D4DFF, #7F5AF0);">
+                                <i class="fas fa-cogs"></i>
+                                <i class="fas fa-arrow-up-right-from-square arrow-icon"></i>
+                            </div>
+                            <div class="article-content">
+                                <div class="article-meta"><span>How-to Guide</span><span>9 min read</span></div>
+                                <h3 class="article-title">How Image Steganography Works</h3>
+                                <p class="article-description">Explore the mechanics of how steganography embeds hidden data within digital images at the pixel level.</p>
+                                <span class="read-more">Read More &rarr;</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="article-card">
+                        <a href="blog5.html">
+                            <div class="article-header" style="background-image: linear-gradient(135deg, #4D4DFF, #7F5AF0);">
+                                <i class="fas fa-desktop"></i>
+                                <i class="fas fa-arrow-up-right-from-square arrow-icon"></i>
+                            </div>
+                            <div class="article-content">
+                                <div class="article-meta"><span>Examples</span><span>7 min read</span></div>
+                                <h3 class="article-title">Real-World Steganography Examples</h3>
+                                <p class="article-description">Explore practical applications of steganography in privacy and security contexts.</p>
+                                <span class="read-more">Read More &rarr;</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="article-card">
+                        <a href="blog6.html">
+                            <div class="article-header" style="background-image: linear-gradient(135deg, #4D4DFF, #7F5AF0);">
+                                <i class="fas fa-graduation-cap"></i>
+                                <i class="fas fa-arrow-up-right-from-square arrow-icon"></i>
+                            </div>
+                            <div class="article-content">
+                                <div class="article-meta"><span>Research/Methods</span><span>15 min read</span></div>
+                                <h3 class="article-title">Advanced Steganography Methods</h3>
+                                <p class="article-description">Explore cutting-edge steganography methods for enhanced security and stealth.</p>
+                                <span class="read-more">Read More &rarr;</span>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Stego-Secure. All rights reserved. | <a href="#privacy">Privacy Policy</a> | <a href="#terms">Terms of Service</a> | <a href="contactus.html">Contact Us</a></p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleButton = document.getElementById('theme-toggle');
+            const body = document.body;
+            const icon = toggleButton.querySelector('i');
+
+            // 1. Check for saved preference or default to dark
+            const currentTheme = localStorage.getItem('theme');
+
+            if (currentTheme === 'light') {
+                body.classList.add('light-mode');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            } else {
+                // Default or 'dark' saved
+                localStorage.setItem('theme', 'dark');
+                body.classList.remove('light-mode');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+
+            // 2. Handle click
+            toggleButton.addEventListener('click', () => {
+                body.classList.toggle('light-mode');
+                
+                // Update local storage and icon
+                let theme = 'dark';
+                if (body.classList.contains('light-mode')) {
+                    theme = 'light';
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                } else {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+                localStorage.setItem('theme', theme);
+            });
+        });
+    </script>
+</body>
+</html>

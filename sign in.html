@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Stego-Secure</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-50">
+  <div class="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
+    
+    <!-- Logo -->
+    <div class="flex justify-center mb-6">
+      <img src="logo3.png" 
+           alt="StoryWeaver Logo" class="w-20 h-20 rounded-full shadow-md"/>
+    </div>
+
+    <!-- Title -->
+    <h2 class="text-2xl font-bold text-center text-gray-800">Login to Stego-Secure</h2>
+    <p class="text-center text-gray-500 mb-6">Sign in to continue</p>
+
+    <!-- Email Input -->
+    <div class="mb-4">
+      <label for="email" class="block text-gray-600 mb-1">Email</label>
+      <input id="email" type="email" placeholder="you@example.com" 
+             class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+
+    <!-- Password Input -->
+    <div class="mb-4">
+      <label for="password" class="block text-gray-600 mb-1">Password</label>
+      <input id="password" type="password" placeholder="••••••••" 
+             class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+
+    <!-- Sign In Button -->
+    <button class="w-full bg-gray-900 text-white py-2 rounded-lg hover:bg-gray-800">Sign in</button>
+
+    <!-- Links -->
+    <div class="flex justify-between text-sm text-gray-600 mt-4">
+      <a href="#" class="hover:underline">Forgot password?</a>
+      <a href="sign up.html" class="hover:underline">Need an account? Sign up</a>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const signInButton = document.querySelector('button');
+        const backendUrl = 'http://localhost:3000/signin'; // MUST match your server PORT
+
+        signInButton.addEventListener('click', async (e) => {
+            e.preventDefault(); // Stop the default button submission behavior
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            // Basic client-side validation
+            if (!email || !password) {
+                alert('Please enter both email and password.');
+                return;
+            }
+
+            try {
+                const response = await fetch(backendUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    // Send data as a JSON string
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Success (HTTP status 200)
+                    alert(data.message); 
+                    // Redirect to the dashboard page if successful
+                    window.location.href = data.redirect || '/'; 
+                } else {
+                    // Failure (HTTP status 400 or 401)
+                    alert('Sign In Failed: ' + data.message);
+                }
+
+            } catch (error) {
+                // Network or server connection error
+                console.error('Error during sign-in:', error);
+                alert('A network error occurred. Please check the server connection.');
+            }
+        });
+
+        // --- OPTIONAL: Add a dummy registration function for testing ---
+        // Since you don't have a signup page yet, this lets you register users easily:
+        async function registerTestUser() {
+             const testEmail = prompt("Enter a test email for signup:");
+             const testPassword = prompt("Enter a test password:");
+             if (testEmail && testPassword) {
+                 const registerResponse = await fetch('http://localhost:3000/signup', {
+                     method: 'POST',
+                     headers: { 'Content-Type': 'application/json' },
+                     body: JSON.stringify({ email: testEmail, password: testPassword }),
+                 });
+                 const registerData = await registerResponse.json();
+                 alert(registerData.message);
+             }
+        }
+        // You can run this function in your browser's console (F12) to register a test user!
+        // Example: registerTestUser();
+    });
+</script>
+</body>
+</html>

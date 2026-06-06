@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Stego-Secure</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        /* CSS STYLES */
+
+        /* Global Styles and Body Background */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* Main Container for the entire form area */
+        .form-container {
+            padding: 20px;
+            width: 100%;
+            max-width: 420px; /* Max width of the card */
+        }
+
+        /* The White Card */
+        .form-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px 30px;
+            text-align: center;
+        }
+
+        /* Back to Sign In link */
+        .back-link {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: left;
+            margin-bottom: 25px;
+            font-size: 15px;
+            color: #757575;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #1e1e1e;
+        }
+
+        .back-link i {
+            margin-right: 8px;
+            font-size: 14px;
+        }
+
+        /* Title Styling */
+        .title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e1e1e;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* Form Layout */
+        .signup-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Spacing between form groups */
+        }
+
+        /* Form Group (Label + Input) */
+        .form-group {
+            text-align: left;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #4a4a4a;
+            margin-bottom: 8px;
+        }
+
+        /* Input Field Wrapper (for icon and input) */
+        .input-field-wrapper {
+            display: flex;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px 15px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-field-wrapper:focus-within {
+            border-color: #3b82f6; /* Blue border on focus */
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        .icon {
+            color: #a0a0a0;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        
+        /* Specific input styling based on image (no visible icon for email in image) */
+        .input-field-wrapper.no-icon {
+            padding-left: 15px; /* Adjust padding for no icon */
+        }
+
+        input {
+            border: none;
+            outline: none;
+            flex-grow: 1;
+            font-size: 16px;
+            padding: 0;
+            color: #333;
+        }
+
+        input::placeholder {
+            color: #a0a0a0;
+        }
+
+        /* Create Account Button */
+        .create-account-button {
+            background-color: #1e1e1e; /* Dark button color */
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.2s;
+        }
+
+        .create-account-button:hover {
+            background-color: #444444;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .form-card {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-card">
+            
+            <a href="sign in.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to sign in
+            </a>
+
+            <h1 class="title">Join Stego-Secure</h1>
+
+            <form class="signup-form">
+
+                <div class="form-group">
+                    <label for="email" class="input-label">Email</label>
+                    <div class="input-field-wrapper no-icon">
+                        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="input-label">Password</label>
+                    <div class="input-field-wrapper">
+                        <i class="fas fa-lock icon"></i>
+                        <input type="password" id="password" name="password" placeholder="Min. 8 characters" required minlength="8">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password" class="input-label">Confirm Password</label>
+                    <div class="input-field-wrapper">
+                        <i class="fas fa-lock icon"></i>
+                        <input type="password" id="confirm-password" name="confirm-password" placeholder="Re-enter password" required minlength="8">
+                    </div>
+                </div>
+
+                <button type="submit" class="create-account-button">Create account</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
