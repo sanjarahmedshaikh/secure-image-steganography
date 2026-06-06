@@ -526,6 +526,25 @@
             );
         };
 
+        // Safe Base64 encoding/decoding for Uint8Array to avoid call stack limits
+        const bufferToBase64 = (buffer) => {
+            let binary = '';
+            const bytes = new Uint8Array(buffer);
+            for (let i = 0; i < bytes.byteLength; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            return window.btoa(binary);
+        };
+
+        const base64ToBuffer = (base64) => {
+            const binary = window.atob(base64);
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) {
+                bytes[i] = binary.charCodeAt(i);
+            }
+            return bytes;
+        };
+
         /**
          * Encrypts a message using AES-GCM with a derived key.
          * @param {string} message - The plaintext message to encrypt.
@@ -547,9 +566,9 @@
             );
 
             const bundle = {
-                salt: btoa(String.fromCharCode.apply(null, salt)),
-                iv: btoa(String.fromCharCode.apply(null, iv)),
-                ciphertext: btoa(String.fromCharCode.apply(null, new Uint8Array(ciphertext))),
+                salt: bufferToBase64(salt),
+                iv: bufferToBase64(iv),
+                ciphertext: bufferToBase64(ciphertext),
             };
             return JSON.stringify(bundle);
         };
@@ -563,9 +582,9 @@
         const decryptMessage = async (jsonPayload, password) => {
             try {
                 const bundle = JSON.parse(jsonPayload);
-                const salt = new Uint8Array(atob(bundle.salt).split('').map(c => c.charCodeAt(0)));
-                const iv = new Uint8Array(atob(bundle.iv).split('').map(c => c.charCodeAt(0)));
-                const ciphertext = new Uint8Array(atob(bundle.ciphertext).split('').map(c => c.charCodeAt(0)));
+                const salt = base64ToBuffer(bundle.salt);
+                const iv = base64ToBuffer(bundle.iv);
+                const ciphertext = base64ToBuffer(bundle.ciphertext);
                 const key = await deriveKey(password, salt);
                 const decryptedBuffer = await window.crypto.subtle.decrypt(
                     { name: 'AES-GCM', iv: iv },
@@ -598,12 +617,13 @@
                 image.onload = async () => {
                     try {
                         const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
+                        // Use willReadFrequently to prevent hardware acceleration bugs
+                        const ctx = canvas.getContext('2d', { willReadFrequently: true });
                         canvas.width = image.width;
                         canvas.height = image.height;
 
-                        // IMPORTANT: Fill background to handle transparent images (e.g. PNGs)
-                        ctx.fillStyle = 'white';
+                        // Fill background to opaque white, ensuring original image alpha is flattened
+                        ctx.fillStyle = '#FFFFFF';
                         ctx.fillRect(0, 0, canvas.width, canvas.height);
                         ctx.drawImage(image, 0, 0);
 
@@ -618,21 +638,26 @@
                         bytesToHide.set(dataBytes);
                         bytesToHide.set(EOM_MARKER, dataBytes.length);
 
-                        // Use 3 color channels (RGB) per pixel, skipping the Alpha channel
-                        const availableBits = (pixels.length / 4) * 3;
+                        // BYPASS RGB COLOR SPACE CORRUPTION: 
+                        // We will store the data EXCLUSIVELY in the Alpha channel (1 bit per pixel).
+                        // Browsers rarely apply color-management profiles to the alpha channel.
+                        const availableBits = pixels.length / 4;
                         const requiredBits = bytesToHide.length * 8;
 
                         if (requiredBits > availableBits) {
-                            return reject(new Error("Message is too large for this image."));
+                            return reject(new Error("Message is too large for this image. Please use a larger image."));
+                        }
+
+                        // Force the entire alpha channel to 255 first to provide a clean slate
+                        for (let i = 3; i < pixels.length; i += 4) {
+                            pixels[i] = 255;
                         }
 
                         let bitIndex = 0;
                         for (const byte of bytesToHide) {
                             for (let i = 0; i < 8; i++) {
                                 const bit = (byte >> i) & 1;
-                                const pixelIndex = Math.floor(bitIndex / 3);
-                                const channelIndex = bitIndex % 3;
-                                const dataIndex = (pixelIndex * 4) + channelIndex;
+                                const dataIndex = (bitIndex * 4) + 3; // Index 3 is Alpha
 
                                 pixels[dataIndex] = (pixels[dataIndex] & 0xFE) | bit;
                                 bitIndex++;
@@ -664,13 +689,12 @@
                 image.onload = async () => {
                     try {
                         const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
+                        const ctx = canvas.getContext('2d', { willReadFrequently: true });
                         canvas.width = image.width;
                         canvas.height = image.height;
 
-                        // IMPORTANT: Fill background to ensure consistent pixel data reading
-                        ctx.fillStyle = 'white';
-                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        // IMPORTANT: Do NOT fill background. We want the exact alpha values of the PNG.
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
                         ctx.drawImage(image, 0, 0);
 
                         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -680,12 +704,11 @@
                         let currentByte = 0;
                         let bitCount = 0;
 
-                        const availableBits = (pixels.length / 4) * 3;
+                        // Reading from Alpha channel only
+                        const availableBits = pixels.length / 4;
 
                         for (let bitIndex = 0; bitIndex < availableBits; bitIndex++) {
-                            const pixelIndex = Math.floor(bitIndex / 3);
-                            const channelIndex = bitIndex % 3;
-                            const dataIndex = (pixelIndex * 4) + channelIndex;
+                            const dataIndex = (bitIndex * 4) + 3; // Index 3 is Alpha
 
                             const bit = pixels[dataIndex] & 1;
                             currentByte |= (bit << bitCount);
